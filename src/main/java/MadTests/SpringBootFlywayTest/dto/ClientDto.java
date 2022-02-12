@@ -26,6 +26,14 @@ public class ClientDto {
     @JsonIgnore
     private String middlename;
 
+    /*
+    {
+    "id": 1,
+    "phone": "7999"
+    "fullname": "Волдаев Левушка"
+    }
+    * */
+
     public String getFullName() {
         return Arrays.asList(surname, firstname, middlename)
                 .stream()
