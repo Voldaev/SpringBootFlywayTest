@@ -1,7 +1,7 @@
 package MadTests.SpringBootFlywayTest.service;
 
-import MadTests.SpringBootFlywayTest.dataclass.Client;
-import MadTests.SpringBootFlywayTest.dataclass.Offer;
+import MadTests.SpringBootFlywayTest.models.ClientEntity;
+import MadTests.SpringBootFlywayTest.models.OfferEntity;
 
 import java.sql.Date;
 import java.util.List;
@@ -14,14 +14,14 @@ public interface DBService {
      * @param offer "id" will be generated, but rest fields, such as "name",
      * "duration" and "price" should be found in income @RequestBody
      */
-    void create(Offer offer);
+    void create(OfferEntity offer);
 
     /**
      * Use it to get info about all offers
      * @return list of all offers, which currently stored in DB
      * or null if there is no any offer
      */
-    List<Offer> readAll();
+    List<OfferEntity> readAll();
 
     /**
      * Use it to delete offer with corresponding "id" from DB
@@ -30,16 +30,16 @@ public interface DBService {
      * process, however could be blocked by table restrictions
      * (can't kill offer, while have client's order on it)
      */
-    boolean delete(int id);
+    void delete(int id);
 
     /**
      * Use it to add new client to DB
-     * @param client client "id" will be generated, but rest fields, such as "name",
+     * @param clientEntity client "id" will be generated, but rest fields, such as "name",
      * "phone" and "time" should be found in income @RequestBody
      * @return boolean representation of success in creation
      * (time collisions may prevent creation)
      */
-    Integer create(Client client);
+    Integer create(ClientEntity clientEntity);
 
     /**
      * Use it to get info about client
@@ -47,7 +47,7 @@ public interface DBService {
      * @return the client from DB corresponding to the "id"
      * or null, if there is no such client
      */
-    Client read(int id);
+    ClientEntity read(int id);
 
     /**
      * magic

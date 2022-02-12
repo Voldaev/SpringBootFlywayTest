@@ -1,10 +1,11 @@
 package MadTests.SpringBootFlywayTest.service;
 
-import MadTests.SpringBootFlywayTest.dataclass.Client;
-import MadTests.SpringBootFlywayTest.dataclass.Offer;
+import MadTests.SpringBootFlywayTest.models.ClientEntity;
+import MadTests.SpringBootFlywayTest.models.OfferEntity;
 import MadTests.SpringBootFlywayTest.repo.ClientRepository;
 import MadTests.SpringBootFlywayTest.repo.OffersRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.sql.Date;
@@ -13,6 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @Service
+@Transactional
 public class DBServiceImpl implements DBService {
 
     private final OffersRepository offersRepository;
@@ -24,29 +26,32 @@ public class DBServiceImpl implements DBService {
     }
 
     @Override
-    public void create(Offer offer) {
+    public void create(OfferEntity offer) {
         offersRepository.save(offer);
     }
 
     @Override
-    public List<Offer> readAll() {
+    public List<OfferEntity> readAll() {
         return offersRepository.findAll();
     }
 
     @Override
-    public boolean delete(int id) {
+    public void delete(int id) {
         if (offersRepository.existsById(id)) {
             offersRepository.deleteById(id);
-            return true;
+        } else {
+            throw new NullPointerException("Услуга не найдена");
         }
-        return false;
     }
 
     //---------------
 
     @Override
-    public Integer create(Client client) {
+    public Integer create(ClientEntity client) {
         int[] bool = new int[]{0};
+        for (Map.Entry<Date, Date> entry : allTime().entrySet()) {
+
+        }
         allTime().forEach((date, date2) -> {
             if (client.getDate().getTime()>=date.getTime() && client.getDate().getTime()<date2.getTime())
                 bool[0]++;
@@ -60,7 +65,7 @@ public class DBServiceImpl implements DBService {
 
 
     @Override
-    public Client read(int id) {
+    public ClientEntity read(int id) {
         return clientRepository.getById(id);
     }
 

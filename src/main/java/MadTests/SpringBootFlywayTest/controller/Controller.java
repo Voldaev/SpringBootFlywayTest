@@ -1,8 +1,11 @@
 package MadTests.SpringBootFlywayTest.controller;
 
-import MadTests.SpringBootFlywayTest.dataclass.Client;
-import MadTests.SpringBootFlywayTest.dataclass.Offer;
+import MadTests.SpringBootFlywayTest.dto.ClientDto;
+import MadTests.SpringBootFlywayTest.models.ClientEntity;
+import MadTests.SpringBootFlywayTest.models.OfferEntity;
 import MadTests.SpringBootFlywayTest.service.DBService;
+import MadTests.SpringBootFlywayTest.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,63 +16,64 @@ import java.util.Map;
 
 @RestController
 public class Controller {
-    private final DBService DBService;
 
-    public Controller(DBService DBService) {
-        this.DBService = DBService;
-    }
+    @Autowired
+    DBService dbService;
+
+    @Autowired
+    UserService userService;
+
 
     @GetMapping(value = "/offers")
-    public ResponseEntity<List<Offer>> read() {
-        final List<Offer> offers = DBService.readAll();
-
-        return offers != null && !offers.isEmpty() ?
-                new ResponseEntity<>(offers, HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+    public List<OfferEntity> read() {
+        return dbService.readAll();
     }
 
     @PostMapping(value =  "/offers")
-    public ResponseEntity<?> create(@RequestBody Offer offer) {
-        DBService.create(offer);
+    public ResponseEntity<?> create(@RequestBody OfferEntity offer) {
+        dbService.create(offer);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping(value = "/offers/{id}")
-    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
-        final boolean deleted = DBService.delete(id);
-
-        return deleted ?
-                new ResponseEntity<>(HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+    public void delete(@PathVariable(name = "id") int id) {
+       dbService.delete(id);
     }
 
 
 //----------------------------------------------------------------------------------
 
-    @PostMapping(value = "/clients")
-    public ResponseEntity<?> create(@RequestBody Client client) {
-        final Integer created = DBService.create(client);
-
-        return created > 0 ?
-                new ResponseEntity<>(created ,HttpStatus.OK) :
-                new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
+    @PostMapping(value = "/clients/save")
+    public Integer saveClient(@RequestBody ClientDto client) {
+        return userService.save(client);
     }
 
     @GetMapping(value = "/clients/{id}")
-    public ResponseEntity<Client> read(@PathVariable(name = "id") int id)  {
-        final Client client = DBService.read(id);
+    public ResponseEntity<ClientEntity> read(@PathVariable(name = "id") int id)  {
+        final ClientEntity clientEntity = dbService.read(id);
 
-        return client != null ?
-                new ResponseEntity<>(client, HttpStatus.OK) :
+        return clientEntity != null ?
+                new ResponseEntity<>(clientEntity, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
     }
 
     @GetMapping(value = "/clients")
     public ResponseEntity<Map<Date, Date>> allTime() {
-        final Map<Date, Date> timetable = DBService.allTime();
+        final Map<Date, Date> timetable = dbService.allTime();
 
         return timetable != null && !timetable.isEmpty() ?
                 new ResponseEntity<>(timetable, HttpStatus.OK) :
                 new ResponseEntity<>(HttpStatus.I_AM_A_TEAPOT);
     }
+
+    /*
+    * todo какие сервисы реализовать для фронта:
+    *  1. получение информации о клиенте по id
+    *  2. обновление или создание нового клиента
+    *  3. получение списка услуг
+    *  4. получение списка свободного времени для записи
+    *  4.1. можно добавить чтобы сервис получал на вход параметры для расчета нужного свободного времени
+    *       параметры: идентификатор услуги и интервал который клиенту интересен
+    *  5. запись на вход идентификатор клиента, услуга, дата и время
+    * */
 }
