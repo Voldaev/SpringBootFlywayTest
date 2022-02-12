@@ -43,7 +43,7 @@ public class DBServiceImpl implements DBService {
     }
 
     //---------------
-    //qewqeqweqweqw
+
     @Override
     public Integer create(Client client) {
         int[] bool = new int[]{0};
@@ -58,13 +58,13 @@ public class DBServiceImpl implements DBService {
         return 0;
     }
 
-    // fffff wtf
+
     @Override
     public Client read(int id) {
         return clientRepository.getById(id);
     }
 
-    //qweqweqweqweqw
+
     @Override
     public Map<Date, Date> allTime() {
         Map<Date, Date> map = new HashMap<>();
