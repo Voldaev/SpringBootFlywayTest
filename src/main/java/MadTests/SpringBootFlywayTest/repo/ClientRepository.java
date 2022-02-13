@@ -19,4 +19,10 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer> {
     Integer tempDecision(@Param("date") Date date);
 
 //    @Query(value = "select o from OfferEntity o where o.name like :wa");
+
+    /* tests
+   select o.* from orders o inner join offers of on o.offer_id = of.id
+    where date_start + concat(of.duration,' minutes')::interval > current_timestamp;
+
+     */
 }
