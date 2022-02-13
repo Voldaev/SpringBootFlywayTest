@@ -1,5 +1,6 @@
 package MadTests.SpringBootFlywayTest.service;
 
+import MadTests.SpringBootFlywayTest.dto.ClientDTO;
 import MadTests.SpringBootFlywayTest.models.ClientEntity;
 import MadTests.SpringBootFlywayTest.models.OfferEntity;
 import MadTests.SpringBootFlywayTest.repo.ClientRepository;
@@ -65,8 +66,14 @@ public class ClientsDBService {
 
 
 
-    public ClientEntity read(int id) {
-        return clientRepository.getById(id);
+    public ClientDTO read(int id) {
+
+        ClientEntity clientEntity = clientRepository.getById(id);
+        ClientDTO clientDto = new ClientDTO();
+        clientDto.setId(clientEntity.getId());
+        clientDto.setName(clientEntity.getName());
+        clientDto.setPhone(clientEntity.getPhone());
+        return clientDto;
     }
 
 
@@ -83,6 +90,9 @@ public class ClientsDBService {
     }
 
 
+    public Integer save(ClientDTO client) {
+        return 0; //fixme
+    }
 }
 
 /*
@@ -91,7 +101,7 @@ public class Service {
     @Autowired
     ClientRepository clientRepository;
 
-    public Integer save(ClientDto dto) {
+    public Integer save(ClientDTO dto) {
         ClientEntity entity;
         if (dto.getId() == null) {
             entity = new ClientEntity();
