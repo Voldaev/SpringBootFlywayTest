@@ -20,7 +20,7 @@ CREATE UNIQUE index clients_phone on clients using btree( lower(phone) );
 CREATE TABLE orders -- таблица заказов
 (
  id serial not null constraint orders_pkey primary key ,
- client_id int not null references clients(id),
- offer_id int not null references offers(id),
+ client_id int not null references clients(client_id),
+ offer_id int not null references offers(offer_id),
  date_start timestamptz not null -- время начала выполнения услуги
 );

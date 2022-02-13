@@ -26,7 +26,7 @@ public class OrdersController {
         return ordersDBService.read(offer, window);
     }
 
-    @PostMapping(value =  "/orders")
+    @PostMapping(value = "/orders")
     public boolean createOrder(@RequestBody OrderDTO order) {
         return ordersDBService.create(order);
     }

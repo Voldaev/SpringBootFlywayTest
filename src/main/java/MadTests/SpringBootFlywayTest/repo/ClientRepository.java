@@ -12,11 +12,11 @@ import java.util.List;
 @Repository
 public interface ClientRepository extends JpaRepository<ClientEntity, Integer> {
 
-    @Query(value = "select * from clients where start > :date", nativeQuery = true)
-    List<ClientEntity> allActualClients(@Param("date") Date date);
-
-    @Query(value = "select id from clients where start = :date", nativeQuery = true)
-    Integer tempDecision(@Param("date") Date date);
+//    @Query(value = "select * from clients where start > :date", nativeQuery = true)
+//    List<ClientEntity> allActualClients(@Param("date") Date date);
+//
+//    @Query(value = "select id from clients where start = :date", nativeQuery = true)
+//    Integer tempDecision(@Param("date") Date date);
 
 //    @Query(value = "select o from OfferEntity o where o.name like :wa");
 
