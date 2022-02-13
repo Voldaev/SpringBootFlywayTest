@@ -14,7 +14,7 @@ import java.util.List;
 public class ClientEntity {
 
     @Id
-    @Column(name =  "id")
+    @Column(name =  "client_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 

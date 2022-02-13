@@ -12,7 +12,7 @@ import java.util.List;
 public class OfferEntity {
 
     @Id
-    @Column(name = "id")
+    @Column(name = "offer_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY) //tests
     private Integer id;
 
