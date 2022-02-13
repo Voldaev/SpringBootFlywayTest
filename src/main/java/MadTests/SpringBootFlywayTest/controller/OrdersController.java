@@ -27,7 +27,7 @@ public class OrdersController {
     }
 
     @PostMapping(value =  "/orders")
-    public Integer createOrder(@RequestBody OrderDTO order) {
+    public boolean createOrder(@RequestBody OrderDTO order) {
         return ordersDBService.create(order);
     }
 }

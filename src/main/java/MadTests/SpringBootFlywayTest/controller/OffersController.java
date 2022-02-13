@@ -20,7 +20,7 @@ public class OffersController {
     }
 
     @PostMapping(value = "/offers")
-    public Integer createOffer(@RequestBody OfferDTO offer) {
-        return offersDBService.create(offer);
+    public void createOffer(@RequestBody OfferDTO offer) {
+        offersDBService.create(offer);
     }
 }
