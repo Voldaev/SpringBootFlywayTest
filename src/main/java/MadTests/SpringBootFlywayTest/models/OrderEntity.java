@@ -26,12 +26,4 @@ public class OrderEntity {
     @Column(name = "date_start")
     private LocalDateTime start;
 
-//
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "client_id",nullable = false)
-//    private ClientEntity clientEntity;
-
-//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "clientEntity")
-//    private Set<OfferEntity> offers;
-//
 }
