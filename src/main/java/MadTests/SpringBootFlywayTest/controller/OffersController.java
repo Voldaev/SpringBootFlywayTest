@@ -23,4 +23,9 @@ public class OffersController {
     public void createOffer(@RequestBody OfferDTO offer) {
         offersDBService.create(offer);
     }
+
+    @DeleteMapping(value = "/offers/{id}")
+    public void deleteOffer(@RequestBody int id){
+        offersDBService.delete(id);
+    }
 }

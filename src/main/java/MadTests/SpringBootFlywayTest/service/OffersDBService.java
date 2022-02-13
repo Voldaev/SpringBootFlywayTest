@@ -34,11 +34,11 @@ public class OffersDBService {
         offersRepository.save(entity);
     }
 
-//    public void delete(int id) {
-//        if (offersRepository.existsById(id)) {
-//            offersRepository.deleteById(id);
-//        } else {
-//            throw new NullPointerException("Услуга не найдена");
-//        }
-//    }
+    public void delete(int id) {
+        if (offersRepository.existsById(id)) {
+            offersRepository.deleteById(id);
+        } else {
+            throw new NullPointerException("Услуга не найдена");
+        }
+    }
 }
