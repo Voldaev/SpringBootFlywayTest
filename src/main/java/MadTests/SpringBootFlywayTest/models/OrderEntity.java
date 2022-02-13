@@ -15,29 +15,23 @@ public class OrderEntity {
     @Column(name = "id")
     private Integer id;
 
-    @Column(name = "fixme")
-    private Integer clientId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "client_id",nullable = false)
+    private ClientEntity clientEntity;
 
-    @Column(name = "fixme")
-    private Integer offerId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "offer_id",nullable = false)
+    private ClientEntity offerEntity;
 
-    @Column(name = "start")
+    @Column(name = "date_start")
     private LocalDateTime start;
 
 //
-//    @ManyToOne(fetch = FetchType.LAZY) //todo как соединять сущности!
+//    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "client_id",nullable = false)
 //    private ClientEntity clientEntity;
 
-    /*
-    @Column(name = "start")
-    //todo не используй тип date вместо него
-    // правильно использовать LocalDateTime или LocalDate
-    // в зависимости от того в каком виде дата храниться в БД!
-    private Date date;
-
-    @OneToMany(fetch = FetchType.LAZY,mappedBy = "clientEntity")
-    private Set<OfferEntity> offers;
-
-     */
+//    @OneToMany(fetch = FetchType.LAZY,mappedBy = "clientEntity")
+//    private Set<OfferEntity> offers;
+//
 }

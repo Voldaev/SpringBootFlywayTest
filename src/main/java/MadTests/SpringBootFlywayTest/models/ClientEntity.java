@@ -2,6 +2,7 @@ package MadTests.SpringBootFlywayTest.models;
 
 import lombok.*;
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,5 +23,8 @@ public class ClientEntity {
 
     @Column(name = "phone")
     private String phone;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "clientEntity")
+    private List<OrderEntity> orders;
 
 }

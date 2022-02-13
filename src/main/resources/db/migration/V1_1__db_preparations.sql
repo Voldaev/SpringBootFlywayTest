@@ -1,7 +1,7 @@
 CREATE TABLE offers -- таблица услуг
 (
-    id serial constraint offers_pkey primary key ,
-    name  varchar(200) not null , -- название услуги
+    offer_id serial constraint offers_pkey primary key ,
+    name varchar(200) not null , -- название услуги
     duration int not null , -- продолжительность в минутах
     price int not null  -- цена в $
 );
@@ -10,8 +10,8 @@ CREATE UNIQUE index offers_name on offers using btree( lower(name) );
 
 CREATE TABLE clients -- таблица клиентов
 (
-    id serial primary key ,
-    name  varchar(50) not null , -- имя клиента
+    client_id serial primary key ,
+    name varchar(50) not null , -- имя клиента
     phone varchar(20) not null -- тел номер клиента
 );
 
