@@ -3,8 +3,8 @@ package MadTests.SpringBootFlywayTest.controller;
 import MadTests.SpringBootFlywayTest.dto.ClientDto;
 import MadTests.SpringBootFlywayTest.models.ClientEntity;
 import MadTests.SpringBootFlywayTest.models.OfferEntity;
-import MadTests.SpringBootFlywayTest.service.DBService;
-import MadTests.SpringBootFlywayTest.service.UserService;
+import MadTests.SpringBootFlywayTest.service.ClientsDBService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,14 +15,10 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-public class Controller {
+public class ClientsController {
 
     @Autowired
-    DBService dbService;
-
-    @Autowired
-    UserService userService;
-
+    ClientsDBService dbService;
 
     @GetMapping(value = "/offers")
     public List<OfferEntity> read() {
@@ -42,11 +38,11 @@ public class Controller {
 
 
 //----------------------------------------------------------------------------------
-
-    @PostMapping(value = "/clients/save")
-    public Integer saveClient(@RequestBody ClientDto client) {
-        return userService.save(client);
-    }
+//
+//    @PostMapping(value = "/clients/save")
+//    public Integer saveClient(@RequestBody ClientDto client) {
+//        return userService.save(client);
+//    }
 
     @GetMapping(value = "/clients/{id}")
     public ResponseEntity<ClientEntity> read(@PathVariable(name = "id") int id)  {
@@ -76,4 +72,14 @@ public class Controller {
     *       параметры: идентификатор услуги и интервал который клиенту интересен
     *  5. запись на вход идентификатор клиента, услуга, дата и время
     * */
+
+    /*
+    /clients/{id}
+    /clients/save
+
+    /offers
+
+    /orders/time
+    /orders
+     */
 }
