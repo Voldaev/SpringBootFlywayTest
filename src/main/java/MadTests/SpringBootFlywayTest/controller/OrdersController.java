@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,9 @@ public class OrdersController {
         ordersDBService.create(order);
     }
 
-    @GetMapping(value = "/orders") //debug
-    public List<OrderEntity> debug(){ return ordersDBService.debug(); }
+    @GetMapping(value = "/debug") //debug
+    public List<OrderDTO> debug(){ return ordersDBService.debug(); }
+
+    @GetMapping(value = "/debug2") //debug2
+    public List<LocalDateTime> debug2(){ return ordersDBService.debugGetStarts(); }
 }

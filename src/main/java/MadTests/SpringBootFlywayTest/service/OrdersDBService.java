@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -29,8 +30,25 @@ public class OrdersDBService {
         this.clientsRepository = clientsRepository;
         this.offersRepository = offersRepository;
     }
-    public List<OrderEntity> debug() {
-        return ordersRepository.findAll();
+
+    public List<LocalDateTime> debugGetStarts() {
+        List<Timestamp> timestamps = ordersRepository.allStarts();
+        List<LocalDateTime> list = new ArrayList<>();
+        timestamps.forEach(timestamp -> list.add(timestamp.toLocalDateTime()));
+        return list;
+    }
+
+    public List<OrderDTO> debug() {
+        List<OrderDTO> orderDTOList = new ArrayList<>();
+        List<OrderEntity> orderEntityList = ordersRepository.findAll();
+        for (OrderEntity entity: orderEntityList) {
+            OrderDTO next = new OrderDTO();
+            next.setId(entity.getId());
+            next.setClient_id(entity.getClientEntity().getId());
+            next.setOffer_id(entity.getOfferEntity().getId());
+            next.setStart(entity.getStart());
+        }
+        return orderDTOList;
     }
 
     public List<TimeWindowDTO> readAll() {
