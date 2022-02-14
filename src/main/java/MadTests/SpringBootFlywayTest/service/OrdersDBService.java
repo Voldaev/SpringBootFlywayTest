@@ -92,8 +92,16 @@ public class OrdersDBService {
         entity.setOfferEntity(offersRepository.getById(order.getOffer_id()));
         entity.setStart(order.getStart());
 
-
-
+        List<TimeWindowDTO> windows = readAll();
+        TimeWindowDTO target = new TimeWindowDTO(entity.getStart(),entity.getStart().plusMinutes(entity.getOfferEntity().getDuration()));
+        boolean approved = false;
+        for (TimeWindowDTO window : windows) {
+            if (!approved && (target.getStart().isEqual(window.getStart()) || target.getStart().isAfter(window.getStart()))
+                    && (target.getEnd().isEqual(window.getEnd()) || target.getEnd().isBefore(window.getEnd())))
+                approved = true;
+        }
+        if (approved)
         ordersRepository.save(entity);
+        else throw new NullPointerException("Недопустимый временной промежуток");
     }
 }

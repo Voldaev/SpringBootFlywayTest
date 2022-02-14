@@ -23,7 +23,7 @@ public class OrdersController {
         return ordersDBService.readAll();
     }
 
-    @GetMapping(value = "/orders/wanted")
+    @GetMapping(value = "/orders/wanted") //something wrong with request body recognition fixme
     public List<TimeWindowDTO> getFreeTimeInWindow(@RequestBody String offer, LocalDateTime start, LocalDateTime end) {
         return ordersDBService.read(offer, start, end);
     }
