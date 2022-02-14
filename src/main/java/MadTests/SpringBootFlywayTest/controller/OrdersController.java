@@ -2,6 +2,7 @@ package MadTests.SpringBootFlywayTest.controller;
 
 import MadTests.SpringBootFlywayTest.dto.OrderDTO;
 import MadTests.SpringBootFlywayTest.dto.TimeWindowDTO;
+import MadTests.SpringBootFlywayTest.models.OrderEntity;
 import MadTests.SpringBootFlywayTest.service.OrdersDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,4 +31,7 @@ public class OrdersController {
     public void createOrder(@RequestBody OrderDTO order) {
         ordersDBService.create(order);
     }
+
+    @GetMapping(value = "/orders") //debug
+    public List<OrderEntity> debug(){ return ordersDBService.debug(); }
 }

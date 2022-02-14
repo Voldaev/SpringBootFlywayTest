@@ -13,7 +13,6 @@ public class OrderEntity {
 
     @Id
     @Column(name = "id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -22,7 +21,7 @@ public class OrderEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offer_id",nullable = false)
-    private OfferEntity offerEntity;
+    private ClientEntity offerEntity;
 
     @Column(name = "date_start")
     private LocalDateTime start;

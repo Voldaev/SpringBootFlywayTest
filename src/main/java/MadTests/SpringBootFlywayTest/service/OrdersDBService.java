@@ -29,16 +29,20 @@ public class OrdersDBService {
         this.clientsRepository = clientsRepository;
         this.offersRepository = offersRepository;
     }
-
+    public List<OrderEntity> debug() {
+        return ordersRepository.findAll();
+    }
 
     public List<TimeWindowDTO> readAll() {
         Map<LocalDateTime, Integer> allBlocked = ordersRepository.allBlocked();
         TreeMap<LocalDateTime, Integer> sortedBlocked = new TreeMap<>(allBlocked);
         List<TimeWindowDTO> windows = new ArrayList<>();
         if (sortedBlocked.size()>0) {
-            windows.add(new TimeWindowDTO(LocalDateTime.now(),sortedBlocked.firstKey()));
+            windows.add(new TimeWindowDTO(
+                    LocalDateTime.now(),
+                    sortedBlocked.firstKey()));
             for (Map.Entry<LocalDateTime, Integer> entry : sortedBlocked.entrySet()) {
-                windows.set(windows.size()-1,new TimeWindowDTO(windows.get(windows.size()-1).getStart(),entry.getKey()));
+                windows.set(windows.size()-1,new TimeWindowDTO(windows.get(windows.size()-1).getStart(), entry.getKey()));
                 windows.add(new TimeWindowDTO(entry.getKey().plusMinutes(entry.getValue().longValue()),
                         entry.getKey().plusMinutes(entry.getValue().longValue())));
             }
@@ -69,10 +73,10 @@ public class OrdersDBService {
     }
 
     public void create(OrderDTO order) {
-        OrderEntity entity = new OrderEntity();
-        entity.setClientEntity(clientsRepository.getById(order.getClient_id()));
-        entity.setOfferEntity(offersRepository.getById(order.getOffer_id()));
-        entity.setStart(order.getStart());
-        ordersRepository.save(entity);
+//        OrderEntity entity = new OrderEntity();
+//        entity.setClientEntity(clientsRepository.getById(order.getClient_id()));
+//        entity.setOffer_id(offersRepository.getById(order.getOffer_id()));
+//        entity.setStart(order.getStart());
+//        ordersRepository.save(entity);
     }
 }
