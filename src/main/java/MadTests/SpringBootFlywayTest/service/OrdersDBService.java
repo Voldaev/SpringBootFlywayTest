@@ -3,6 +3,7 @@ package MadTests.SpringBootFlywayTest.service;
 
 import MadTests.SpringBootFlywayTest.dto.OrderDTO;
 import MadTests.SpringBootFlywayTest.dto.TimeWindowDTO;
+import MadTests.SpringBootFlywayTest.models.OfferEntity;
 import MadTests.SpringBootFlywayTest.models.OrderEntity;
 import MadTests.SpringBootFlywayTest.repo.ClientsRepository;
 import MadTests.SpringBootFlywayTest.repo.OffersRepository;
@@ -31,29 +32,11 @@ public class OrdersDBService {
         this.offersRepository = offersRepository;
     }
 
-    public List<LocalDateTime> debugGetStarts() {
-        List<Timestamp> timestamps = ordersRepository.allStarts();
-        List<LocalDateTime> list = new ArrayList<>();
-        timestamps.forEach(timestamp -> list.add(timestamp.toLocalDateTime()));
-        return list;
-    }
-
-    public List<OrderDTO> debug() {
-        List<OrderDTO> orderDTOList = new ArrayList<>();
-        List<OrderEntity> orderEntityList = ordersRepository.findAll();
-        for (OrderEntity entity: orderEntityList) {
-            OrderDTO next = new OrderDTO();
-            next.setId(entity.getId());
-            next.setClient_id(entity.getClientEntity().getId());
-            next.setOffer_id(entity.getOfferEntity().getId());
-            next.setStart(entity.getStart());
-        }
-        return orderDTOList;
-    }
-
     public List<TimeWindowDTO> readAll() {
-        Map<LocalDateTime, Integer> allBlocked = ordersRepository.allBlocked();
-        TreeMap<LocalDateTime, Integer> sortedBlocked = new TreeMap<>(allBlocked);
+        List<OrderEntity> allActualOrders = ordersRepository.allBlocked();
+
+        TreeMap<LocalDateTime, Integer> sortedBlocked = new TreeMap<>();
+        allActualOrders.forEach((orderEntity -> sortedBlocked.put(orderEntity.getStart(),orderEntity.getOfferEntity().getDuration())));
         List<TimeWindowDTO> windows = new ArrayList<>();
         if (sortedBlocked.size()>0) {
             windows.add(new TimeWindowDTO(
@@ -72,17 +55,29 @@ public class OrdersDBService {
         return windows;
     }
 
-    public List<TimeWindowDTO> read(String offer, TimeWindowDTO targetWindow) {
-        Integer duration = ordersRepository.duration(offer);
+    public List<TimeWindowDTO> read(String offer, LocalDateTime start, LocalDateTime end) {
+        //debug temp decision:
+        int duration = 0;
+        List<OfferEntity> offers = offersRepository.findAll();
+        for (OfferEntity of :
+                offers) {
+            if (of.getName().equals(offer))
+                duration = of.getDuration();
+        }
+        if (duration == 0)
+            return null;
+        TimeWindowDTO targetWindow = new TimeWindowDTO(start,end);
+        //
         List<TimeWindowDTO> windows = readAll();
         List<TimeWindowDTO> result = new ArrayList<>();
+        int finalDuration = duration;
         windows.forEach(window -> {
             if (window.getStart().isBefore(targetWindow.getEnd()) && window.getEnd().isAfter(targetWindow.getStart())) {
                 TimeWindowDTO test = new TimeWindowDTO();
                 test.setStart(window.getStart().isBefore(targetWindow.getStart()) ? targetWindow.getStart() : window.getStart());
                 test.setEnd(window.getEnd().isAfter(targetWindow.getEnd()) ? targetWindow.getEnd() : window.getEnd());
-                if (test.getStart().plusMinutes(duration).isBefore(test.getEnd()) ||
-                        test.getStart().plusMinutes(duration).isEqual(test.getEnd())) {
+                if (test.getStart().plusMinutes(finalDuration).isBefore(test.getEnd()) ||
+                        test.getStart().plusMinutes(finalDuration).isEqual(test.getEnd())) {
                     result.add(test);
                 }
             }
@@ -92,10 +87,13 @@ public class OrdersDBService {
 
     public void create(OrderDTO order) {
         OrderEntity entity = new OrderEntity();
-        //entity.setId();//не нужен, сам сгенерируется
+
         entity.setClientEntity(clientsRepository.getById(order.getClient_id()));
         entity.setOfferEntity(offersRepository.getById(order.getOffer_id()));
         entity.setStart(order.getStart());
+
+
+
         ordersRepository.save(entity);
     }
 }

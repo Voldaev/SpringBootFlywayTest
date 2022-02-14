@@ -23,9 +23,9 @@ public class OrdersController {
         return ordersDBService.readAll();
     }
 
-    @GetMapping(value = "/orders/window")
-    public List<TimeWindowDTO> getFreeTimeInWindow(@RequestBody String offer, TimeWindowDTO window) {
-        return ordersDBService.read(offer, window);
+    @GetMapping(value = "/orders/wanted")
+    public List<TimeWindowDTO> getFreeTimeInWindow(@RequestBody String offer, LocalDateTime start, LocalDateTime end) {
+        return ordersDBService.read(offer, start, end);
     }
 
     @PostMapping(value = "/orders")
@@ -33,9 +33,4 @@ public class OrdersController {
         ordersDBService.create(order);
     }
 
-    @GetMapping(value = "/debug") //debug
-    public List<OrderDTO> debug(){ return ordersDBService.debug(); }
-
-    @GetMapping(value = "/debug2") //debug2
-    public List<LocalDateTime> debug2(){ return ordersDBService.debugGetStarts(); }
 }
