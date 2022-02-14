@@ -73,10 +73,7 @@ public class OrdersDBService {
     }
 
     public void create(OrderDTO order) {
-//        OrderEntity entity = new OrderEntity();
-//        entity.setClientEntity(clientsRepository.getById(order.getClient_id()));
-//        entity.setOffer_id(offersRepository.getById(order.getOffer_id()));
-//        entity.setStart(order.getStart());
-//        ordersRepository.save(entity);
+        OrderEntity entity = new OrderEntity();
+        //entity.setId();//не нужен, сам сгенерируется
     }
 }
