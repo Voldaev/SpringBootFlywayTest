@@ -9,8 +9,6 @@ import java.util.List;
 @Setter
 @RequiredArgsConstructor
 @Table(name = "clients")
-//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"}) //todo это тут не нужно!
-//этот костыль был полезен. tests
 public class ClientEntity {
 
     @Id

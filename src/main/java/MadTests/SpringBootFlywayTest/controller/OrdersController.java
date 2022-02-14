@@ -16,7 +16,7 @@ public class OrdersController {
     @Autowired
     OrdersDBService ordersDBService;
 
-    @GetMapping(value = "/orders")
+    @GetMapping(value = "/orders/windows")
     public List<TimeWindowDTO> getAllFreeTime() {
         return ordersDBService.readAll();
     }
@@ -27,7 +27,7 @@ public class OrdersController {
     }
 
     @PostMapping(value = "/orders")
-    public boolean createOrder(@RequestBody OrderDTO order) {
-        return ordersDBService.create(order);
+    public void createOrder(@RequestBody OrderDTO order) {
+        ordersDBService.create(order);
     }
 }

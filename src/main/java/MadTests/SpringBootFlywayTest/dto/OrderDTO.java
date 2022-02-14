@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode
 @Builder
 public class OrderDTO {
-    private Integer id;
+//    private Integer id;
     private Integer client_id;
     private Integer offer_id;
     private LocalDateTime start;
