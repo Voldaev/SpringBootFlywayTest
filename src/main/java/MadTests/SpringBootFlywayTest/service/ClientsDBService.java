@@ -18,7 +18,6 @@ public class ClientsDBService {
         this.clientsRepository = clientsRepository;
     }
 
-    //tests
     public ClientDTO read(int id) {
 
         ClientEntity clientEntity = clientsRepository.getById(id);
@@ -29,7 +28,6 @@ public class ClientsDBService {
         return clientDto;
     }
 
-    //tests
     public Integer save(ClientDTO dto) {
         ClientEntity entity;
         if (dto.getId() == null) {

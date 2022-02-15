@@ -1,7 +1,6 @@
 package MadTests.SpringBootFlywayTest.controller;
 
 import MadTests.SpringBootFlywayTest.dto.OfferDTO;
-
 import MadTests.SpringBootFlywayTest.service.OffersDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;

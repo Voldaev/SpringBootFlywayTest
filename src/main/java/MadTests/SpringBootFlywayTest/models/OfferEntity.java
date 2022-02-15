@@ -13,7 +13,7 @@ public class OfferEntity {
 
     @Id
     @Column(name = "offer_id")
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //tests
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "name")
