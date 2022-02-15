@@ -4,13 +4,12 @@ import MadTests.SpringBootFlywayTest.dto.OrderDTO;
 import MadTests.SpringBootFlywayTest.dto.TimeWindowDTO;
 import MadTests.SpringBootFlywayTest.dto.WantedInputDTO;
 import MadTests.SpringBootFlywayTest.service.OrdersDBService;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class OrdersController {
@@ -22,10 +21,12 @@ public class OrdersController {
         return ordersDBService.readAll();
     }
 
-    //debug fixme
-    @PostMapping(value = "/orders/wanted") //GetMapping
-    public List<TimeWindowDTO> getFreeTimeInWindow(@RequestBody WantedInputDTO wanted) {
-        return ordersDBService.read(wanted);
+
+    @GetMapping(value = "/orders/wanted")
+    public List<TimeWindowDTO> getFreeTimeInWindow(@RequestParam(name = "offer") String offer,
+                                                   @RequestParam(name = "hour", required = false, defaultValue = "-1") String hour,
+                                                   @RequestParam(name = "minute", required = false, defaultValue = "-1") String minute) {
+        return ordersDBService.read(offer, hour, minute);
     }
 
     @PostMapping(value = "/orders")

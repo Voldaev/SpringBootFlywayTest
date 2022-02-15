@@ -56,18 +56,22 @@ public class OrdersDBService {
         return windows;
     }
 
-    public List<TimeWindowDTO> read(WantedInputDTO wanted) {
-        //debug temp decision:
+    public List<TimeWindowDTO> read(String offer, String hour, String minute) {
+        WantedInputDTO wanted = new WantedInputDTO(offer, Integer.parseInt(hour), Integer.parseInt(hour));
         int duration = 0;
         List<OfferEntity> offers = offersRepository.findAll();
         for (OfferEntity of :
                 offers) {
-            if (of.getName().equals(wanted.getOffer_name()))
+            if (of.getName().equals(wanted.getOffer()))
                 duration = of.getDuration();
         }
         if (duration == 0)
-            return null;
-        TimeWindowDTO targetWindow = new TimeWindowDTO(LocalTime.of(wanted.getHours(), wanted.getMinutes()).atDate(LocalDate.now()),
+            throw new NullPointerException("услуга не найдена");
+        if (wanted.getHour() == -1)
+            wanted.setHour(LocalDateTime.now().getHour());
+        if (wanted.getMinute() == -1)
+            wanted.setMinute(LocalDateTime.now().getMinute());
+        TimeWindowDTO targetWindow = new TimeWindowDTO(LocalTime.of(wanted.getHour(), wanted.getMinute()).atDate(LocalDate.now()),
                 LocalTime.MIDNIGHT.atDate(LocalDate.now().plusDays(1)));
         //
         List<TimeWindowDTO> windows = readAll();

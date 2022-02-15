@@ -10,7 +10,7 @@ import lombok.*;
 @EqualsAndHashCode
 @Builder
 public class WantedInputDTO {
-    private String offer_name;
-    private Integer hours;
-    private Integer minutes;
+    private String offer;
+    private Integer hour;
+    private Integer minute;
 }
