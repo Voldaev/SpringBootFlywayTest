@@ -3,6 +3,7 @@ package MadTests.SpringBootFlywayTest.service;
 
 import MadTests.SpringBootFlywayTest.dto.OrderDTO;
 import MadTests.SpringBootFlywayTest.dto.TimeWindowDTO;
+import MadTests.SpringBootFlywayTest.dto.WantedInputDTO;
 import MadTests.SpringBootFlywayTest.models.OfferEntity;
 import MadTests.SpringBootFlywayTest.models.OrderEntity;
 import MadTests.SpringBootFlywayTest.repo.ClientsRepository;
@@ -55,18 +56,19 @@ public class OrdersDBService {
         return windows;
     }
 
-    public List<TimeWindowDTO> read(String offer, LocalDateTime start, LocalDateTime end) {
+    public List<TimeWindowDTO> read(WantedInputDTO wanted) {
         //debug temp decision:
         int duration = 0;
         List<OfferEntity> offers = offersRepository.findAll();
         for (OfferEntity of :
                 offers) {
-            if (of.getName().equals(offer))
+            if (of.getName().equals(wanted.getOffer_name()))
                 duration = of.getDuration();
         }
         if (duration == 0)
             return null;
-        TimeWindowDTO targetWindow = new TimeWindowDTO(start,end);
+        TimeWindowDTO targetWindow = new TimeWindowDTO(LocalTime.of(wanted.getHours(), wanted.getMinutes()).atDate(LocalDate.now()),
+                LocalTime.MIDNIGHT.atDate(LocalDate.now().plusDays(1)));
         //
         List<TimeWindowDTO> windows = readAll();
         List<TimeWindowDTO> result = new ArrayList<>();
