@@ -26,7 +26,8 @@ public class OrdersController {
     public List<TimeWindowDTO> getFreeTimeInWindow(@RequestParam(name = "offer") String offer,
                                                    @RequestParam(name = "hour", required = false, defaultValue = "-1") String hour,
                                                    @RequestParam(name = "minute", required = false, defaultValue = "-1") String minute) {
-        return ordersDBService.read(offer, hour, minute);
+        WantedInputDTO wanted = new WantedInputDTO(offer, Integer.parseInt(hour), Integer.parseInt(minute));
+        return ordersDBService.read(wanted);
     }
 
     @PostMapping(value = "/orders")

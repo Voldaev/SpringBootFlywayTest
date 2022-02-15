@@ -56,8 +56,7 @@ public class OrdersDBService {
         return windows;
     }
 
-    public List<TimeWindowDTO> read(String offer, String hour, String minute) {
-        WantedInputDTO wanted = new WantedInputDTO(offer, Integer.parseInt(hour), Integer.parseInt(hour));
+    public List<TimeWindowDTO> read(WantedInputDTO wanted) {
         int duration = 0;
         List<OfferEntity> offers = offersRepository.findAll();
         for (OfferEntity of :
