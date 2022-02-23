@@ -32,23 +32,29 @@ public class OrdersDBService {
 
     public List<TimeWindowDTO> readAll() {
         List<OrderEntity> allActualOrders = ordersRepository.allBlocked();
-
-        TreeMap<LocalDateTime, Integer> sortedBlocked = new TreeMap<>();
-        allActualOrders.forEach((orderEntity -> sortedBlocked.put(orderEntity.getStart(),orderEntity.getOfferEntity().getDuration())));
-        List<TimeWindowDTO> windows = new ArrayList<>();
-        if (sortedBlocked.size()>0) {
-            windows.add(new TimeWindowDTO(
-                    LocalDateTime.now(),
-                    sortedBlocked.firstKey()));
-            for (Map.Entry<LocalDateTime, Integer> entry : sortedBlocked.entrySet()) {
-                windows.set(windows.size()-1,new TimeWindowDTO(windows.get(windows.size()-1).getStart(), entry.getKey()));
-                windows.add(new TimeWindowDTO(entry.getKey().plusMinutes(entry.getValue().longValue()),
-                        entry.getKey().plusMinutes(entry.getValue().longValue())));
+        List<TimeWindowDTO> windows = new ArrayList<>(allActualOrders.size());
+        LocalDateTime start = null;
+        for (OrderEntity orderEntity : allActualOrders) {
+            if (start == null) {
+                windows.add(TimeWindowDTO.builder().start(LocalDateTime.now()).end(orderEntity.getStart()).build());
             }
-            windows.set(windows.size()-1,new TimeWindowDTO(windows.get(windows.size()-1).getStart(),
-                    LocalTime.MIDNIGHT.atDate(LocalDate.now().plusDays(1))));
+            if (start != null) {
+                LocalDateTime end = orderEntity.getStart();
+                if (start.isBefore(end)) {
+                    windows.add(
+                            TimeWindowDTO.builder()
+                                    .start(start)
+                                    .end(end)
+                                    .build()
+                    );
+                }
+            }
+            start = orderEntity.getStart().plusMinutes(orderEntity.getOfferEntity().getDuration());
+        }
+        if (start != null) {
+            windows.add(new TimeWindowDTO(start, LocalTime.MIDNIGHT.atDate(LocalDate.now().plusDays(1))));
         } else {
-            windows.add(new TimeWindowDTO(LocalDateTime.now(),LocalTime.MIDNIGHT.atDate(LocalDate.now().plusDays(1))));
+            windows.add(new TimeWindowDTO(LocalDateTime.now(), LocalTime.MIDNIGHT.atDate(LocalDate.now().plusDays(1))));
         }
         return windows;
     }

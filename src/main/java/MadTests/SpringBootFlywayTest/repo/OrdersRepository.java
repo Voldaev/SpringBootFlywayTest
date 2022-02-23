@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrdersRepository extends JpaRepository<OrderEntity, Integer> {
 
     @Query(value = "select o.* from orders o inner join offers of on o.offer_id = of.offer_id" +
-            " where date_start + concat(of.duration,' minutes')::::interval > current_timestamp", nativeQuery = true)
+            " where date_start + concat(of.duration,' minutes')::::interval > current_timestamp order by date_start", nativeQuery = true)
     List<OrderEntity> allBlocked();
 
 }
